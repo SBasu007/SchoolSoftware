@@ -1,0 +1,137 @@
+<%
+let total=0
+
+function postDate() {
+    const d = new Date();
+    let date = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+    return date;
+}; 
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Commission</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 40px;
+            font-size: 15px;
+        }
+        h2 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th {
+            border-top: 1px dashed black;
+            border-bottom: 1px dashed black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        .row1, .row3 {
+            display: flex;
+            justify-content: space-between;
+        }
+        .row3{
+            margin-bottom:15px;
+        }
+        .signature {
+            margin-top: 20px;
+            margin-left: 40px;
+            text-align: left;
+            float: right;
+            border-top: 1px dotted black;
+            width: max-content;
+        }
+    </style>
+</head>
+<body>
+    <h2>MONTHLY COLLECTION</h2>
+    <div class="row1">
+        <div class="content">Bill no.-</div>
+        <div class="content">Date: <%= postDate() %></div>
+    </div>
+    <div class="row2">
+        <p>Month: <u>
+            <% if (month === '01') { %>
+                January <%= year%>
+            <% } else if (month === '02') { %>
+                February <%= year%>
+            <% } else if (month === '03') { %>
+                March <%= year%>
+            <% } else if (month === '04') { %>
+                April <%= year%>
+            <% } else if (month === '05') { %>
+                May <%= year%>
+            <% } else if (month === '06') { %>
+                June <%= year%>
+            <% } else if (month === '07') { %>
+                July <%= year%>
+            <% } else if (month === '08') { %>
+                August <%= year%>
+            <% } else if (month === '09') { %>
+                September <%= year%>
+            <% } else if (month === '10') { %>
+                October <%= year%>
+            <% } else if (month === '11') { %>
+                November <%= year%>
+            <% } else if (month === '12') { %>
+                December <%= year%>
+            <% } else { %>
+                Invalid month
+            <% } %>
+            </u></p>
+        <p>Session: <u><%= session %></u></p>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>School Code</th>
+                <th>School Name</th>
+                <th>Total students</th>
+                <th>School Fees(Rs.)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% rows.forEach((row) => { 
+                
+            %>
+                <tr>
+                    <td><%= row.school_code %></td>
+                    <td><%= row.school_name %></td>
+                    <%
+                        let net_school = row.total_fees - row.total_fees*(row.center_fee/100)
+                        let net_agent = net_school*(row.agent_comm/100)
+                        total = total+net_school
+                    %>
+                    <td><%= row.total_students %></td>
+                    <td><%= net_school %></td>
+                
+                </tr>
+            <% }) %>
+            <!-- Row to show total students and total fees -->
+            <tr>
+                <td colspan="3" style="font-weight: bold;padding-left: 300px">Grand Total: </td>
+                <td style="font-weight: bold;">Rs. <%=total%></td>
+            </tr>
+            <!-- Row to calculate and show the center fee -->
+           
+        </tbody>
+    </table>
+
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        window.print();
+    });
+</script>
+</html>

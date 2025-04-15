@@ -1,0 +1,100 @@
+<% 
+// Simulate mock data directly in the EJS file for testing purposes
+
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Sheet</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            font-size: 12px;
+        }
+
+        .page {
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+            padding-top: 80px; /* Space at the top for each page */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+
+        th, td {
+            border-top: 0.5px solid black;
+            padding: 10px;
+            text-align: left;
+            border-bottom: 0.5px solid black;
+        }
+
+        .last {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .signature {
+            border-top: 1px dotted black;
+            margin-top:20px;
+            padding: 0 60px;
+            text-align: left;
+        }
+
+       
+    </style>
+</head>
+<body>
+    <div class="page">
+        <h2>ATTENDANCE SHEET</h2>
+        <h3><%= rows[0].school_name.toUpperCase() %> [Code: <%= code %>] Session: <%= session %></h3>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Name of the Student</th>
+                    <th>Year</th>
+                    <th>Roll No.</th>
+                    <th>Guardian's Name</th>
+                    <th>Full Signature of the Student</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% rows.forEach((row) => { %>
+                    <tr>
+                        <td><%= row.student_name %></td>
+                        <td><%= row.year %></td>
+                        <td><%= row.roll %></td>
+                        <td><%= row.guard_name %></td>
+                        <td></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="last">
+        <div class="date">
+            <p>Date of Examination:____________________</p>
+        </div>
+        <div class="signature">
+            <p>Signature of Co-ordinator</p>
+        </div>
+    </div>
+<p style="text-align: center;">END OF REPORT</p>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            window.print();
+        });
+    </script>
+</body>
+</html>

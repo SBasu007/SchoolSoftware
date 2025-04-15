@@ -1,0 +1,131 @@
+<% 
+// Simulate mock data directly in the EJS file for testing purposes
+// const rows = Array.from({ length: 100 }, (_, i) => ({
+//   school_name: `School ${Math.floor(i / 10) + 1}`,
+//   student_name: `SOUMYADEEP BHATTACHARYA`,
+//   roll: `${i + 1}`,
+//   year: `Year ${2024 - (i % 4)}`, // Rotating between 4 years
+// }));
+
+const rowsPerPage = 25;
+const totalPages = Math.ceil(rows.length / rowsPerPage); 
+let currentPage = 0;
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examiner Sheet</title>
+    <style>
+        /* Styling for table and layout */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding-top: 40px;
+            font-size: 12px;
+        }
+
+        .page {
+            page-break-after: always;
+            position: relative;
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: right;
+            padding-right: 20px;
+            font-size: 10px;
+        }
+
+        .signature {
+            text-align: left;
+            margin-top: 20px;
+            margin-left: 40px;
+        }
+
+        /* CSS to hide the footer during printing except for page number */
+        @media print {
+            .page {
+                page-break-after: always;
+                margin:25px;
+                margin-top:70px
+            }
+        }
+    </style>
+</head>
+<body>
+    <% rows.forEach((row, index) => { %>
+        <% if (index % rowsPerPage === 0) { currentPage++; %>
+            <div class="page">
+                <h2>EXAMINER SHEET (Marks Foil)</h2>
+                <h3><%= row.school_name.toUpperCase() %> [Centre Code: <%= code %>] Session: <%= session %></h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name of the Student</th>
+                            <th>Roll No.</th>
+                            <th>Year</th>
+                            <th>PR-I</th>
+                            <th>PR-II</th>
+                            <th>TH-I</th>
+                            <th>TH-II</th>
+                            <th>TOT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        <% } %>
+
+        <tr>
+            <td><%= row.student_name %></td>
+            <td><%= row.roll %></td>
+            <td><%= row.year %></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+
+        <% if ((index + 1) % rowsPerPage === 0 || index === rows.length - 1) { %>
+                    </tbody>
+                </table>
+
+                <div class="signature" style="border-top:1px dotted black;  width:max-content ">
+                    <p>Full Signature of the examiner along with date of submission</p>
+                </div>
+
+                <div class="footer">
+                    <p>Page <%= currentPage %> of <%= totalPages %></p>
+                </div>
+            </div>
+        <% } %>
+    <% }) %>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+            window.print();
+        });
+</script>
+</html>

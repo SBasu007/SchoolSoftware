@@ -1,0 +1,78 @@
+.bg-blue{
+  background-color: #253b70!important;;
+}
+.navbar-brand {
+    color: #ffffff; /* White color */
+    font-size: 1.4rem;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  } 
+  .navbar-nav .nav-link {
+    font-weight: bold;
+    color: #ffffff; /* White color */
+    margin-right: 10px;
+  }
+  .entry{
+    margin-left: 15px;
+  }
+  .footer{
+    background-color: black;
+    height:30px;
+    width:100%
+  }
+  .background{
+    background-color: #9c6beb;
+    min-height: 95vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top:60px;
+  }
+.form{
+  background-color: rgb(205, 231, 253);
+  width:30vw;
+  margin: auto;
+}
+.form-control{
+  width:80%;
+  margin:auto;
+  margin-bottom: 15px;
+}
+.form-group>label{
+  margin-left: 45px;
+}
+.form-heading{
+  text-align: center;
+  margin-top: 10px;
+}
+.button-submit{
+  text-align: center;
+  margin-bottom: 10px;
+}
+.form-ending{
+  text-align: center;
+  margin-top: 10px;
+  color:red
+}
+.logout{
+  margin-left:5px
+}
+.container{
+  height:70vh;
+  width:60vw;
+  overflow-y: auto;
+}
+.course-table{
+  text-align: center;
+  vertical-align: middle;
+}
+.course-header{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.disabled {
+  pointer-events: none; /* Prevents clicking */
+  color: gray;         /* Change the text color */
+  text-decoration: none; /* Removes underline */
+  cursor: not-allowed; /* Changes the cursor to indicate it's not clickable */
+}

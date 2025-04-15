@@ -1,0 +1,77 @@
+<%- include("../partials/header.ejs")%>
+<div class="add-course-form">
+    <form action="/editCourse" method="POST">
+        <h3 style="text-align: center; margin-bottom:15px">Course Edit</h3>
+        <% if (typeof error_message !== 'undefined') { %>
+          <p style="text-align: center; color:red"><%= error_message %></p>
+        <% } %>
+        <input type="hidden" name="id" value="<%= courseid %>">
+        <div class="form-row">
+            <label class="student-label" for="year">Course/Year: </label>
+            <% if (typeof year !== 'undefined') { %>
+              <input type="text"  id="year" name="year" value="<%= year %>" required>
+            <% } else { %>
+              <input type="text"  id="year" name="year">
+            <% } %>
+        </div>
+
+        <div class="form-row">
+            <label class="student-label" for="fees">Fees: </label>
+            <% if (typeof fees !== 'undefined') { %>
+              <input type="number" id="fees" name="fees" value="<%= fees %>" required>
+            <% } else { %>
+              <input type="number" id="fees" name="fees">
+            <% } %>
+        </div>
+        
+        <div class="form-row">
+            <label class="student-label" for="theory1">Theory I: </label>
+            <% if (typeof theory1 !== 'undefined') { %>
+              <input type="number" id="theory1" name="theory1" value="<%= theory1 %>" required>
+            <% } else { %>
+              <input type="number" id="theory1" name="theory1">
+            <% } %>
+        </div>
+        
+        <div class="form-row">
+            <label class="student-label" for="theory2">Theory II: </label>
+            <% if (typeof theory2 !== 'undefined') { %>
+              <input type="number" id="theory2" name="theory2" value="<%= theory2 %>" required>
+            <% } else { %>
+              <input type="number" id="theory2" name="theory2">
+            <% } %>
+        </div>
+        
+        <div class="form-row">
+            <label class="student-label" for="practical1">Practical I: </label>
+            <% if (typeof practical1 !== 'undefined') { %>
+              <input type="text" id="practical1" name="practical1" value="<%= practical1 %>" required>
+            <% } else { %>
+              <input type="text" id="practical1" name="practical1">
+            <% } %>
+        </div>
+        
+        <div class="form-row">
+            <label class="student-label" for="practical2">Practical II: </label>
+            <% if (typeof practical2 !== 'undefined') { %>
+              <input type="number" id="practical2" name="practical2" value="<%= practical2 %>" required>
+            <% } else { %>
+              <input type="number" id="practical2" name="practical2">
+            <% } %>
+        </div>
+        
+        <div class="button-submit">
+          <button type="submit" class="btn btn-primary">Update</button>
+          <a href="/home" style="margin-left:20px" class="btn btn-primary">Exit</a>
+        </div>
+    </form>
+    <form action="/deleteCourse" method="POST">
+      <input type="hidden" id="id" name="id" value="<%= courseid %>">
+      <div class="button-submit"> 
+        <button type="submit" style=" width:10vw; margin-left:0px"class="btn btn-danger" id="percentage-btn">Delete</button> 
+      </div>
+      <p style="color:red;text-align: center;">Only that course can be deleted which is not entered in the student/marks field</p>
+  </form>  
+</div>    
+
+<%- include("../partials/footer.ejs")%>

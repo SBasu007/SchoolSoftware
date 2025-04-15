@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTSS</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/index.css">
+    <link rel="stylesheet" href="/styles/form.css">
+</head>
+<body>
+    <section name="navbar">
+      <nav class="navbar navbar-expand-md navbar-dark bg-blue fixed-top" aria-label="Fourth navbar example">
+        <div class="container-fluid">
+          <img src="/assets/ctsslogo.jfif" height="40px"/>
+          
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      
+          <div class="collapse navbar-collapse" id="navbarsExample04">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+              <li class="nav-item dropdown school">
+                <a class="nav-link dropdown-toggle entry" href="#" data-bs-toggle="dropdown" aria-expanded="false">ENTRY</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/addAgent">Agent</a></li>
+                  <li><a class="dropdown-item" href="/addSchool">School</a></li>
+                  <li><a class="dropdown-item" href="/addStudent">Student</a></li>
+                  <li><a class="dropdown-item" href="/addMarks">Marks</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown examiner">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">EDIT</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/editAgent">Agent</a></li>
+                  <li><a class="dropdown-item" href="/editSchool">School</a></li>
+                  <li><a class="dropdown-item" href="/editStudent">Student</a></li>
+                  <li><a class="dropdown-item" href="/editMarks">Marks</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown examiner">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">REPORT</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/viewAdmit">Admit Card</a></li>
+                  <li><a class="dropdown-item" href="/viewMarksheet">Marksheet</a></li>
+                  <li><a class="dropdown-item" href="/viewCertificate">Certificate</a></li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown examiner">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">SPECIAL REPORT</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/viewAttendanceSheet">Attendance Sheet</a></li>
+                  <li><a class="dropdown-item" href="/viewResultSheet">Result Sheet</a></li>
+                  <li><a class="dropdown-item" href="/viewBill">Bill</a></li>
+                  <li><a class="dropdown-item" href="/viewAgentBill">Agent Commission</a></li>
+                  <li><a class="dropdown-item" href="/viewExaminerSheet">Examiner Sheet</a></li>
+                  <hr>
+                  <li><a class="dropdown-item" href="/viewCourseResultSheet">Result Sheet(Course)</a></li>
+                  <li><a class="dropdown-item" href="/viewAgent">Agent List</a></li>
+                  <li><a class="dropdown-item" href="/viewResultSummary">Result Summary</a></li>
+                  <% if (admin) { %>
+                    <li><a class="dropdown-item" href="/viewMonthlyCollection">Monthly Collection</a></li>
+                    <li><a class="dropdown-item" href="/viewSession">Session Report</a></li>
+                  <% } %>
+                </ul>
+              </li>
+              <li class="nav-item dropdown exam">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">UTILITY</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/openCourse">Add/Edit Course & Fees</a></li>
+              </li>
+              <% if (admin) { %>
+              <li class="nav-item dropdown report">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">ADMIN</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/createUser">Create User</a></li>
+                  <li><a class="dropdown-item" href="/changePassword">Change Password</a></li>
+                </ul>
+              </li>
+              <% } %>
+            </ul>
+      
+            <!-- This section aligns the Logout button to the right -->
+              <li class="nav-item" style="margin-left:650px">
+                <a class="nav-link" href="/logout">Logout<i class="bi bi-box-arrow-left logout"></i></a>
+                </li>
+          </div>
+        </div>
+      </nav>
+      
+    </section>
+    <main>
+    <div class="background">

@@ -1,0 +1,27 @@
+<%- include("../partials/header.ejs")%>
+    <div class=" container">
+        <h3 style="text-align: center;">Agent Details</h3>
+    <div class="table-container">
+    <table class="course-table table table-primary table-striped text-center">
+        <thead>
+          <tr>
+            <th scope="col">Code</th>
+            <th scope="col">Name</th>
+            <th scope="col">Add 1</th>
+            <th scope="col">Add 2</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% for(var i=0;i<display.length;i++) { %>  
+          <tr>
+            <td><%= display[i].code %></td>
+            <td><%= display[i].name %></td>
+            <td><%= display[i].add1 %></td>
+            <td><%= display[i].add2%></td>
+          </tr>
+        <% } %>
+        </tbody>
+      </table>
+    </div>
+    </div>
+<%- include("../partials/footer.ejs")%>

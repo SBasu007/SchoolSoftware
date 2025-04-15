@@ -1,0 +1,124 @@
+<%- include("../partials/header.ejs") %>
+<div class="add-school-form">
+    <form action="/editSchool" method="POST">
+        <h3 style="text-align: center;">School Details</h3>
+        <% if (typeof error_message !== 'undefined') { %>
+          <p style="text-align: center; color:red"><%= error_message %></p>
+        <% } %>
+        <div class="form-group">
+          <label for="code">School Code:</label>
+          <input type="text" class="form-control" id="code" name="code" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="name">School Name:</label>
+          <input type="text" class="form-control school-input" id="name" name="name" maxlength="200">
+        </div>
+        
+        <div class="form-group">
+          <label for="add1">Address(1):</label>
+          <input type="text" class="form-control school-input" id="add1" name="add1" maxlength="200">
+        </div>
+        
+        <div class="form-group">
+          <label for="add2">Address(2):</label>
+          <input type="text" class="form-control school-input" id="add2" name="add2" maxlength="200">
+        </div>
+        
+        <div class="form-group">
+          <label for="auth_person">Authorised Person:</label>
+          <input type="text" class="form-control school-input" id="auth_person" name="auth_person" maxlength="200">
+        </div>
+      
+        <hr>
+      
+        <div class="form-group">
+          <label for="center_fee">Center Fee (%):</label>
+          <input type="number" class="form-control" id="center_fee" name="center_fee">
+        </div>
+        
+        <div class="form-group">
+          <label for="agent_code">Agent Code:</label>
+          <input type="text" class="form-control" id="agent_code" name="agent_code">
+        </div>
+        
+        <div class="form-group">
+          <label for="agent_comm">Agent Commission (%):</label>
+          <input type="number" class="form-control" id="agent_comm" name="agent_comm">
+        </div>
+      
+        <div class="button-submit">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <a class="cancel" href="/home"><button class="btn btn-primary">Cancel</button></a>
+        </div>
+      </form>
+      <form action="/deleteSchool" method="POST" style="margin-top: 10px;">
+        <input type="hidden" name="delete_code" id="delete_code" value="">
+        <div class="button-submit"> 
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+    </form>
+</div>
+
+<script>
+  const codeInput = document.getElementById('code');
+  const nameInput = document.getElementById('name');
+  const add1Input = document.getElementById('add1');
+  const add2Input = document.getElementById('add2');
+  const authPersonInput = document.getElementById('auth_person');
+  const centerFeeInput = document.getElementById('center_fee');
+  const agentCodeInput = document.getElementById('agent_code');
+  const agentCommInput = document.getElementById('agent_comm');
+
+  function fetchSchoolDetails(code) {
+    fetch(`/getSchoolDetails?code=${code}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('School not found');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Populate the form fields with fetched data
+        nameInput.value = data.name || '';
+        add1Input.value = data.add1 || '';
+        add2Input.value = data.add2 || '';
+        authPersonInput.value = data.auth_person || '';
+        centerFeeInput.value = data.center_fee || '';
+        agentCodeInput.value = data.agent_code || '';
+        agentCommInput.value = data.agent_comm || '';
+      })
+      .catch(error => {
+        console.error('Error fetching school details:', error);
+        // Optionally clear the fields if the school is not found
+        nameInput.value = '';
+        add1Input.value = '';
+        add2Input.value = '';
+        authPersonInput.value = '';
+        centerFeeInput.value = '';
+        agentCodeInput.value = '';
+        agentCommInput.value = '';
+      });
+  }
+
+  // Event listener for input changes in the code field
+  codeInput.addEventListener('input', function() {
+    const code = this.value.trim();
+    document.getElementById("delete_code").value = code
+
+    if (code.length > 0) {
+      fetchSchoolDetails(code);
+    } else {
+      // Clear fields if the code is empty
+      nameInput.value = '';
+      add1Input.value = '';
+      add2Input.value = '';
+      authPersonInput.value = '';
+      centerFeeInput.value = '';
+      agentCodeInput.value = '';
+      agentCommInput.value = '';
+    }
+  });
+</script>
+
+<%- include("../partials/footer.ejs") %>

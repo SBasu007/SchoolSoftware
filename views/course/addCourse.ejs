@@ -1,0 +1,70 @@
+<%- include("../partials/header.ejs")%>
+<div class="add-course-form">
+    <form action="/addCourse" method="POST">
+        <h3 style="text-align: center; margin-bottom:15px">Course Details</h3>
+        <% if (typeof error_message !== 'undefined') { %>
+          <p style="text-align: center; color:red"><%= error_message %></p>
+        <% } %>
+        
+        <div class="form-row">
+            <label class="student-label" for="year">Course/Year: </label>
+            <% if (typeof year !== 'undefined') { %>
+              <input type="text"  id="year" name="year" placeholder="<%= year %>">
+            <% } else { %>
+              <input type="text"  id="year" name="year">
+            <% } %>
+        </div>
+
+        <div class="form-row">
+            <label class="student-label" for="fees">Fees: </label>
+            <% if (typeof fees !== 'undefined') { %>
+              <input type="number" id="fees" name="fees" placeholder="<%= fees %>">
+            <% } else { %>
+              <input type="number" id="fees" name="fees">
+            <% } %>
+        </div>
+        
+        <div class="form-row">
+            <label class="student-label" for="theory1">Theory I: </label>
+            <% if (typeof theory1 !== 'undefined') { %>
+              <input type="number" id="theory1" name="theory1" placeholder="<%= theory1 %>">
+            <% } else { %>
+              <input type="number" id="theory1" name="theory1">
+            <% } %>
+        </div>
+        
+        <div class="form-row">
+            <label class="student-label" for="theory2">Theory II: </label>
+            <% if (typeof theory2 !== 'undefined') { %>
+              <input type="number" id="theory2" name="theory2" placeholder="<%= theory2 %>">
+            <% } else { %>
+              <input type="number" id="theory2" name="theory2">
+            <% } %>
+        </div>
+        
+        <div class="form-row">
+            <label class="student-label" for="practical1">Practical I: </label>
+            <% if (typeof practical1 !== 'undefined') { %>
+              <input type="text" id="practical1" name="practical1" placeholder="<%= practical1 %>">
+            <% } else { %>
+              <input type="text" id="practical1" name="practical1">
+            <% } %>
+        </div>
+        
+        <div class="form-row">
+            <label class="student-label" for="practical2">Practical II: </label>
+            <% if (typeof practical2 !== 'undefined') { %>
+              <input type="number" id="practical2" name="practical2" placeholder="<%= practical2 %>">
+            <% } else { %>
+              <input type="number" id="practical2" name="practical2">
+            <% } %>
+        </div>
+        
+        <div class="button-submit">
+          <button type="submit" class="btn btn-primary">Add</button>
+          <a href="/home" style="margin-left:20px" class="btn btn-primary">Exit</a>
+        </div>
+    </form>
+</div>    
+
+<%- include("../partials/footer.ejs")%>

@@ -1,0 +1,41 @@
+<%- include("../partials/header.ejs")%>
+    <div class=" container">
+      <div class="course-header">
+        <h3>All courses</h3>
+        <a href="/addCourse" class="btn btn-primary">Add Course</a>
+      </div>
+    <div class="table-container">
+    <table class="course-table table table-primary table-striped text-center">
+        <thead>
+          <tr>
+            <th scope="col">Course/Year</th>
+            <th scope="col">Fees</th>
+            <th scope="col">Theory I</th>
+            <th scope="col">Theory II</th>
+            <th scope="col">Practical I</th>
+            <th scope="col">Practical II</th>
+            <th scope="col">Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% for(var i=0;i<display.length;i++) { %>  
+          <tr>
+            <td><%= display[i].year %></td>
+            <td><%= display[i].fees %></td>
+            <td><%= display[i].theory1 %></td>
+            <td><%= display[i].theory2 ? display[i].theory2 : 0 %></td>
+            <td><%= display[i].practical1 %></td>
+            <td><%= display[i].practical2 ? display[i].practical2 : 0 %></td>
+            <td><form action="/editCourseInitiate" method="POST">
+              <input type="hidden" id="id" name="id" value="<%= display[i].id %>">
+              <div class="button-submit"> 
+                <button type="submit" class="btn btn-success" id="percentage-btn">Edit</button> 
+              </div>
+          </form> </td>
+          </tr>
+        <% } %>
+        </tbody>
+      </table>
+    </div>
+    </div>
+<%- include("../partials/footer.ejs")%>

@@ -1,0 +1,74 @@
+<%- include("../partials/header.ejs")%>
+<div class="add-agent-form">
+    <form action="/editAgent" method="POST">
+        <h3 style="text-align: center;">Agent Details</h3>
+        <% if (typeof error_message !== 'undefined') { %>
+          <p style="text-align: center; color:red"><%= error_message %></p>
+        <% } %>
+        <div class="form-group">
+          <label for="code">Agent Code:</label>
+          <input type="text" class="form-control" id="code" name="code" autocomplete = "off" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="name">Agent Name:</label>
+          <input type="text" class="form-control" id="name" name="name" maxlength="200">
+        </div>
+        
+        <div class="form-group">
+          <label for="add1">Address(1):</label>
+          <input type="text" class="form-control" id="add1" name="add1" maxlength="200">
+        </div>
+        
+        <div class="form-group">
+          <label for="add2">Address(2):</label>
+          <input type="text" class="form-control" id="add2" name="add2" maxlength="200">
+        </div>
+        <div class="button-submit">
+          <button type="submit" class="btn btn-primary">Save</button>  
+        </div>
+      </form>
+      <form action="/deleteAgent" method="POST" style="margin-top: 10px;">
+        <input type="hidden" name="delete_code" id="delete-code" value="">
+        <div class="button-submit"> 
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+    </form>
+    <div class="button-submit"> 
+      <a class="cancel" href="/home"><button type="button" class="btn btn-primary">Cancel</button></a>  
+    </div>
+   
+</div>  
+<script>
+ const codeInput = document.getElementById('code')
+ const a_name = document.getElementById('name')
+ const add1 = document.getElementById('add1')
+ const add2 = document.getElementById('add2')
+
+ function fetchAgentDetails(code) {
+  fetch(`/getAgentDetails?code=${code}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data) {
+        // Populate the name, add1, and add2 with the fetched data
+        a_name.value = data.name || '';
+        add1.value = data.add1 || '';
+        add2.value = data.add2 || '';
+      } else {
+        console.error('No data found for the provided code.');
+      }
+    })
+    .catch(error => console.error('Error fetching agent details:', error));
+}
+
+// Event listener for input changes in the code field
+codeInput.addEventListener('input', function() {
+  const code = this.value.trim();
+
+  if (code.length > 0) {
+    fetchAgentDetails(code);
+  }
+  document.getElementById('delete-code').value = code;
+});
+</script>  
+<%- include("../partials/footer.ejs")%>

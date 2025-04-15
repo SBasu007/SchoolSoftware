@@ -1,0 +1,107 @@
+<%- include("../partials/header.ejs")%>
+<div class="add-student-form">
+    <form action="/addMarks" method="POST">
+        <h3 style="text-align: center; margin-bottom:20px">Add Marks</h3>
+        <% if (typeof error_message !== 'undefined') { %>
+          <p style="text-align: center; color:red"><%= error_message %></p>
+        <% } %>
+        <div class="form-row">
+            <div class="form-row-element">
+                    <label class="student-label"  for="roll">ROLL NO.</label>
+                    <input type="text"  id="roll" name="roll" required autocomplete="off">
+            </div>
+            <div class="form-row-element">
+                <label class="student-label" for="session">SESSION</label>
+                <input type="text"  id="session" name="session">
+            </div>
+            <div class="form-row-element">
+                <label class="student-label" for="year">YEAR</label>
+                <input type="text"  id="year" name="year">
+            </div>  
+        </div>
+        <div class="form-row">
+            <div class="form-row-element">
+              <label class="student-label"  for="name">NAME</label>
+              <div class="student-name output"></div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-row-element">
+              <label class="student-label"  for="add1">CENTER NAME</label>
+              <div class="center-name output"></div>
+            </div>
+          </div>
+        <hr>
+        <div class="form-row">
+            <label>Theoretical</label>
+            <label style="margin-right:200px">Practical</label>
+        </div>
+        <div class="form-row">
+            <div class="form-row-element">
+                <label class="student-label" for="thpaper1">Paper I</label>
+                <input type="number"  id="thpaper1" name="thpaper1" required>
+            </div>
+            <div class="form-row-element">
+                <label class="student-label" for="pracpaper1">Paper I</label>
+                <input type="number"  id="pracpaper1" name="pracpaper1" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-row-element">
+                <label class="student-label" for="thpaper1">Paper II</label>
+                <input type="number"  id="thpaper2" name="thpaper2" required>
+            </div>
+            <div class="form-row-element">
+                <label class="student-label" for="pracpaper1">Paper II</label>
+                <input type="number"  id="pracpaper2" name="pracpaper2" required>
+            </div>
+        </div>
+        
+        <div class="button-submit">
+          <button type="submit" class="btn btn-primary">Add</button>
+          <a href="/addMarks" style="margin-left:20px" class="btn btn-primary">Done</a>
+          <a href="/home" style="margin-left:20px" class="btn btn-primary">Cancel</a>
+        </div>
+    </form>
+      
+</div>    
+<script>
+  window.onload = function() {
+  document.getElementById('roll').focus();
+};
+const rollInput = document.querySelector('#roll');
+const sessionInput = document.querySelector('#session');
+const yearInput = document.querySelector('#year');
+const nameDiv = document.querySelector('.student-name');
+const centerNameDiv = document.querySelector('.center-name');
+
+// Function to fetch student details based on the roll number
+function fetchStudentDetails(selectedRoll) {
+  fetch(`/getStudentDetails?roll=${selectedRoll}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data) {
+        // Populate the session, year, name, and center name with the fetched data
+        sessionInput.value = data.session || '';
+        yearInput.value = data.year || '';
+        nameDiv.innerText = data.name || 'N/A';
+        centerNameDiv.innerText = data.center_name || 'N/A';
+      } else {
+        console.error('No data found for the provided roll number.');
+      }
+    })
+    .catch(error => console.error('Error fetching student details:', error));
+}
+
+// Event listener for input changes in the roll field
+rollInput.addEventListener('input', function() {
+  const selectedRoll = this.value.trim();
+
+  if (selectedRoll.length > 0) {
+    fetchStudentDetails(selectedRoll);
+  }
+});
+</script>
+
+<%- include("../partials/footer.ejs")%>

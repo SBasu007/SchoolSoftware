@@ -1,0 +1,142 @@
+<%- include("../../../partials/header.ejs")%>
+<div class="print-form">
+    <form action="/printExamSheet" method="POST" target="_blank">
+        <h5 style="text-align: center; margin-bottom:20px">Examiner Sheet</h5>
+        <h4 style="text-align: center; margin-bottom:20px">Enter School Code and Session</h4>
+        <% if (typeof error_message !== 'undefined') { %>
+          <p style="text-align: center; color:red"><%= error_message %></p>
+        <% } %>
+        <div class="form-row">
+          <div class="form-row-element"  style="position: relative;">
+              <label class="student-label"  for="code"><strong>School Code: </strong></label>
+              <input type="text"  id="code" name="code" list="code-list" required autocomplete="off">
+              <ul id="code-list" class="custom-dropdown-code"></ul>
+          </div>
+          <div class="form-row-element">
+              <label class="student-label"  for="roll"><strong>Session: </strong></label>
+              <input type="text"  id="session" name="session" required autocomplete="off">
+          </div>
+      </div>
+      <div class="form-row">
+        <div class="form-row-element">
+          <label class="student-label"  for="name">CENTER NAME</label>
+          <div class="center-name output"></div>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-row-element">
+          <label class="student-label"  for="add1">CENTER ADDRESS 1</label>
+          <div class="center-add1 output"></div>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-row-element">
+          <label class="student-label"  for="add2">CENTER ADDRESS 2</label>
+          <div class="center-add2 output"></div>
+        </div>
+      </div>
+        
+        <div class="button-submit">
+          <button type="submit" style=" width:10vw; margin-top:20px"class="btn btn-primary">Print</button>
+        </div>
+        <div class="button-submit">
+            <a href="/home" style=" width:10vw; margin-left:0px" class="btn btn-primary">Exit</a>
+        </div>
+    </form>
+      
+</div>    
+<script>
+  const codeInput = document.getElementById('code');
+const codeList = document.getElementById('code-list');
+const nameDiv = document.querySelector('.center-name');
+const add1Div = document.querySelector('.center-add1');
+const add2Div = document.querySelector('.center-add2');
+
+// Fetch school details on page load if code is pre-filled
+if (codeInput.value) {
+  fetchSchoolDetails(codeInput.value);
+}
+
+// Fetch codes and details based on user input
+codeInput.addEventListener('input', function () {
+  const query = this.value;
+
+  if (query.length <= 5) {
+    fetchCodes(query); // Fetch codes dynamically
+  }
+
+  if (query.length > 5) {
+    fetchSchoolDetails(query); // Fetch details when a full code is entered (assuming a 5-character code)
+  } else {
+    resetSchoolDetails(); // Reset school details if code is incomplete
+  }
+});
+
+// Fetch all codes when input is focused and empty
+codeInput.addEventListener('focus', function () {
+  if (this.value === '') {
+    codeList.style.display = 'block';
+    fetchCodes(); // Fetch all codes if input is blank
+  }
+});
+
+function fetchCodes(query = '') {
+  fetch(`/getSchoolCodes?query=${query}`)
+    .then(response => response.json())
+    .then(data => {
+      codeList.innerHTML = ''; // Clear existing options
+      data.forEach(code => {
+        const listItem = document.createElement('li');
+        listItem.textContent = code.code;
+        listItem.addEventListener('click', function () {
+          codeInput.value = code.code; // Set input value on click
+          codeList.style.display = 'none'; // Hide dropdown after selection
+          fetchSchoolDetails(code.code); // Fetch details after selecting a code
+        });
+        codeList.appendChild(listItem); // Add new list item
+      });
+      codeList.style.display = data.length ? 'block' : 'none'; // Show or hide dropdown based on results
+    })
+    .catch(error => console.error('Error fetching codes:', error));
+}
+
+// Hide dropdown when clicking outside the input field
+document.addEventListener('click', function (event) {
+  if (!event.target.closest('#code') && !event.target.closest('#code-list')) {
+    codeList.style.display = 'none'; // Hide dropdown if clicked outside
+  }
+});
+
+function fetchSchoolDetails(selectedCode) {
+  fetch(`/getSchoolDetails?code=${selectedCode}`)
+    .then(response => {
+      if (!response.ok) {
+        // If the response status is not 200-299, throw an error
+        return response.json().then(err => {
+          throw new Error(err.error || 'Failed to fetch school details');
+        });
+      }
+      return response.json();
+    })
+    .then(data => {
+      nameDiv.innerText = data.name || 'N/A';
+      add1Div.innerText = data.add1 || 'N/A';
+      add2Div.innerText = data.add2 || 'N/A';
+    })
+    .catch(error => {
+      console.error('Error fetching school details:', error);
+      resetSchoolDetails();
+    });
+}
+
+// Reset school details if no code is entered or error occurs
+function resetSchoolDetails() {
+  nameDiv.innerText = 'N/A';
+  add1Div.innerText = 'N/A';
+  add2Div.innerText = 'N/A';
+}
+
+</script>
+<%- include("../../../partials/footer.ejs")%>

@@ -1,0 +1,79 @@
+<%- include("../../../partials/header.ejs")%>
+<div class="print-form">
+    <form action="/printCourseResultSheet" method="POST" target="_blank">
+        <h5 style="text-align: center; margin-bottom:20px">Result Sheet (Course)</h5>
+        <h4 style="text-align: center; margin-bottom:20px">Enter School Code and Session</h4>
+        <% if (typeof error_message !== 'undefined') { %>
+          <p style="text-align: center; color:red"><%= error_message %></p>
+        <% } %>
+        <div class="form-row">
+            <div class="form-row-element" style="position: relative;">
+                <label class="student-label" for="year"><strong>Year: </strong></label>
+                <% if (typeof year !== 'undefined') { %>
+                  <input type="text" id="year" name="year" value="<%= year %>" list="year-list" autocomplete="off" required>
+                <% } else { %>
+                  <input type="text" id="year" name="year" list="year-list" autocomplete="off" required>
+                <% } %>
+                <ul id="year-list" class="custom-dropdown"></ul>
+            </div>
+            <div class="form-row-element">
+                <label class="student-label"  for="roll"><strong>Session: </strong></label>
+                <input type="text"  id="session" name="session" required autocomplete="off">
+            </div>
+      </div>
+        
+        <div class="button-submit">
+          <button type="submit" style=" width:10vw; margin-top:20px"class="btn btn-primary">Print</button>
+        </div>
+        <div class="button-submit">
+            <a href="/home" style=" width:10vw; margin-left:0px" class="btn btn-primary">Exit</a>
+        </div>
+    </form>
+      
+</div>    
+<script>
+  // Year Input Handling
+const yearInput = document.getElementById('year');
+const yearList = document.getElementById('year-list');
+
+// Fetch years based on user input
+yearInput.addEventListener('input', function() {
+  const query = this.value;
+  fetchYears(query); // Call fetchYears with the current input
+});
+
+// Fetch all years or filtered years when input is focused
+yearInput.addEventListener('focus', function() {
+  const query = this.value;
+  fetchYears(query); // Fetch years, even if input is pre-filled
+});
+
+// Fetch years from the server based on the query
+function fetchYears(query = '') {
+  fetch(`/getYears?query=${query}`)
+    .then(response => response.json())
+    .then(data => {
+      yearList.innerHTML = ''; // Clear existing options
+      data.forEach(year => {
+        const listItem = document.createElement('li');
+        listItem.textContent = year.year;
+        listItem.addEventListener('click', function () {
+          yearInput.value = year.year; // Set input value on click
+          yearList.style.display = 'none'; // Hide dropdown after selection
+        });
+        yearList.appendChild(listItem); // Add new list item
+      });
+      yearList.style.display = data.length ? 'block' : 'none'; // Show or hide dropdown based on results
+    })
+    .catch(error => console.error('Error fetching years:', error));
+}
+
+// Hide dropdown when clicking outside the input field
+document.addEventListener('click', function (event) {
+  if (!yearInput.contains(event.target) && !yearList.contains(event.target)) {
+    yearList.style.display = 'none'; // Hide dropdown if clicked outside
+  }
+});
+
+</script>
+<%- include("../../../partials/footer.ejs")%>

@@ -1,0 +1,119 @@
+<%
+function postDate() {
+            const d = new Date();
+            let date = d.getDate() + "." + (d.getMonth() + 1) + "." + d.getFullYear();
+            return date;
+            }; 
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Sheet</title>
+    <style>
+        /* Styling for table and layout */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            font-size: 12px;
+        }
+
+        .page {
+            page-break-after: always;
+            position: relative;
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+
+        table, th, td {
+            border-top: 0.5px solid black;
+            border-bottom: 0.5px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        td {
+            padding: 11px 8px !important;
+            font-size: 14px;
+        }
+        .year {
+            font-size: 12px !important;
+        }
+        .last {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: right;
+            padding-right: 20px;
+            font-size: 10px;
+        }
+        .content{
+            text-align: left !important;
+        }
+
+        .signature {
+            text-align: left;
+            margin-top: 20px;
+            margin-left: 40px;
+        }
+
+        /* CSS to hide the footer during printing except for page number */
+        @media print {
+            .page {
+                page-break-after: always;
+                margin: 25px;
+                margin-top: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <h2>RESULT SUMMARY</h2>
+        <h3>Session: <%= session %></h3>
+        <div class="content">
+            <p><strong>Name of School:</strong> <%= school.toUpperCase() %></p>
+            <p><strong>Centre Code:</strong> <%= code %></p>
+            <p><strong>Total No. of students:</strong> <%= rows[0].total_students_in_school %></p>
+
+            <p><strong>DISTINCTION:</strong> <%= rows.find(row => row.division === 'DISTINCTION') ? rows.find(row => row.division === 'DISTINCTION').students_in_division : 0 %></p>
+<p><strong>1ST DIVISION:</strong> <%= rows.find(row => row.division === '1ST DIVISION') ? rows.find(row => row.division === '1ST DIVISION').students_in_division : 0 %></p>
+<p><strong>2ND DIVISION:</strong> <%= rows.find(row => row.division === '2ND DIVISION') ? rows.find(row => row.division === '2ND DIVISION').students_in_division : 0 %></p>
+<p><strong>PASS:</strong> <%= rows.find(row => row.division === 'PASS') ? rows.find(row => row.division === 'PASS').students_in_division : 0 %></p>
+<p><strong>FAIL:</strong> <%= rows.find(row => row.division === 'FAIL') ? rows.find(row => row.division === 'FAIL').students_in_division : 0 %></p>
+<p><strong>Roll numbers missed during marks entry: </strong>
+<% if (left.length !== 0) { %>
+    <% left.forEach((data) => { %>
+        <span><%= data.roll %>  </span>
+    <% }) %>
+<% } %>
+             
+             %>
+            <p><strong>Date:</strong> <%= postDate()%></p>
+            <hr>
+
+        </div>
+
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        window.print();
+    });
+</script>
+</html>

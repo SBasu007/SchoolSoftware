@@ -1,0 +1,26 @@
+<%- include("../../../partials/header.ejs")%>
+<div class="print-form" style="width:40vw !important">
+    <form action="/sessionReport" method="POST" target="_blank">
+        <h5 style="text-align: center; margin-bottom:20px">Session Report</h5>
+        <% if (typeof error_message !== 'undefined') { %>
+          <p style="text-align: center; color:red"><%= error_message %></p>
+        <% } %>
+        <div class="form-row">
+          <div class="form-row-element" style="margin:auto !important">
+            <label class="student-label" for="session"><strong>Session: </strong></label>
+            <input type="text" id="session" name="session" list="code-list" required autocomplete="off">
+        </div>
+      </div>
+        <div class="button-submit">
+          <button type="submit" style=" width:10vw; margin-top:20px"class="btn btn-primary">Print</button>
+        </div>
+        <div class="button-submit">
+            <a href="/home" style=" width:10vw; margin-left:0px" class="btn btn-primary">Exit</a>
+        </div>
+    </form>
+      
+</div>    
+<script>
+ 
+</script>
+<%- include("../../../partials/footer.ejs")%>

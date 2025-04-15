@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Document in cm</title>
+    <style>
+        /* Set the paper size using cm */
+        @page {
+            size: 25.50cm 30.48cm;
+            margin: 0;
+        }
+
+        .text1 {
+            position: absolute;
+            top: 11.4cm; 
+            left: 7.6cm;
+        }
+        .text2 {
+            position: absolute;
+            top: 13.2cm; 
+            left: 8.6cm;
+        }
+        .text3 {
+            position: absolute;
+            top: 14.7cm; 
+            left: 6.6cm;
+            
+        }
+        .text4 {
+            position: absolute;
+            top: 16.4cm; 
+            left: 11.6cm;
+        }
+        .text5 {
+            position: absolute;
+            top: 19.3cm; 
+            left:13.1cm;
+        }
+        .text6 {
+            position: absolute;
+            top: 20.8cm; 
+            left:7.1cm;
+        }
+        .text7 {
+            position: absolute;
+            top: 20.8cm; 
+            left:13.8cm;
+        }
+        .text8 {
+            position: absolute;
+            top: 22.35cm; 
+            left: 4.9cm;
+        }
+        .text9 {
+            position: absolute;
+            top: 23.4cm; 
+            left:4.6cm;
+        }
+        .text10 {
+            position: absolute;
+            top: 23.4cm; 
+            left:12.9cm;
+        }
+        
+        .font{
+            width:max-content;
+            height: max-content;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif ;
+            font-size:23px
+        }
+        /* Modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .modal-content button {
+            margin: 10px;
+            padding: 10px 20px;
+        }
+
+        .modal-content button:hover {
+            cursor: pointer;
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="text1 font" id="text-content1" >DISTINCTION</div>
+    <div class="text2 font" id="text-content2" ></div>
+    <div class="text3 font" id="text-content3" ></div>
+    <div class="text4 font" id="text-content4" ></div>
+    <div class="text5 font" id="text-content5"></div>
+    <div class="text6 font" id="text-content6"></div>
+    <div class="text7 font" id="text-content7" ></div>
+    <div class="text8 font" id="text-content8" ></div>
+    <div class="text9 font" id="text-content9" ></div>
+    <div class="text10 font" id="text-content10" ></div>
+
+    <!-- Custom Modal Dialog -->
+    <div id="myModal" class="modal">
+            <div class="modal-content">
+                <p>No more documents to print!</p>
+                <button id="closeBtn">Close</button>
+        </div>
+    </div>
+    <textarea id="studentData" style="display: none;"><%- JSON.stringify(display) %></textarea>
+    <script>
+        // Wait for the DOM to be fully loaded before running the script
+        document.addEventListener('DOMContentLoaded', function() {
+    // Get the data from the hidden textarea
+    const studentData = document.getElementById('studentData').value;
+
+    // Parse the JSON data
+    const students = JSON.parse(studentData);
+
+    let currentDocIndex = 0;
+
+    // Function to open the modal and wait for user response
+
+    function capitalizeName(name) {
+    return name
+        .toLowerCase() // Convert the whole string to lowercase
+        .replace(/\b\w/g, char => char.toUpperCase()); // Capitalize first letter of each word
+    }
+    // Function to load the document content and print it
+    function loadAndPrintDocument() {
+        if (currentDocIndex < students.length) {
+            // Load content from the current document
+        // Student data
+        document.getElementById('text-content1').textContent = capitalizeName(students[currentDocIndex].name);
+        document.getElementById('text-content2').textContent = capitalizeName(students[currentDocIndex].guard_name);
+        document.getElementById('text-content3').textContent = capitalizeName(students[currentDocIndex].school_name);
+        document.getElementById('text-content4').textContent = students[currentDocIndex].year;
+        document.getElementById('text-content5').textContent = students[currentDocIndex].session;
+        document.getElementById('text-content8').textContent = students[currentDocIndex].roll;
+
+        const marks = students[currentDocIndex].div;
+        let division = '';
+        let status = ''
+        if (marks >= 60) {
+            division = "1st";
+            } else if (marks < 60 && marks >= 50) {
+            division = "2nd";
+            } else if (marks < 50 && marks >= 40) {
+            division = "Pass";
+            } else {
+            division = "Fail";
+        }
+        if (marks>=80){
+            status='(Distinction)'
+        }
+
+        document.getElementById('text-content6').textContent = division;
+        document.getElementById('text-content7').textContent = status;
+
+        // Current date
+        function postDate() {
+            const d = new Date();
+            let date = d.getDate() + "." + (d.getMonth() + 1) + "." + d.getFullYear();
+            return date;
+            };  // Format date as DD.MM.YYYY
+        document.getElementById('text-content9').textContent = postDate();
+        let divstr = marks.toString()+"%";
+        document.getElementById('text-content10').textContent = divstr;
+            // Open print dialog and wait for the user to finish printing
+           // Open print dialog
+           setTimeout(() => {
+                        window.print();
+    
+                        // Move to the next document after a 500ms delay
+                        setTimeout(() => {
+                            currentDocIndex++;
+                            loadAndPrintDocument();
+                        }, 500); // 500ms delay before printing the next document
+                    }, 500); // 500ms (1 second) before opening the print dialog
+        } else {
+             // Show the modal when there are no more documents
+             const modal = document.getElementById("myModal");
+                    modal.style.display = "flex"; // Show modal
+    
+                    // Close button functionality
+                    document.getElementById("closeBtn").onclick = function() {
+                        window.close(); // Close the tab
+                    };
+        }
+    }
+
+    // Automatically load and print the first document on page load
+    window.onload = function() {
+        loadAndPrintDocument();
+    };
+});
+
+    </script>
+</body>
+</html>

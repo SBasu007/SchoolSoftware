@@ -1,0 +1,319 @@
+<%- include("../partials/header.ejs")%>
+<div class="add-student-form">
+  <form action="/editStudent" method="POST">
+      <h3 style="text-align: center; margin-bottom: 20px;">Student Details</h3>
+      <% if (typeof error_message !== 'undefined') { %>
+        <p style="text-align: center; color:red"><%= error_message %></p>
+      <% } %>
+      <p id="status" style="text-align: center; color:red; font-weight:bolder; display:none">STUDENT DOES'NT EXIST!</p>
+      <div class="form-row">
+        <div class="form-row-element">
+          <label class="student-label" for="session">SESSION</label>
+          <% if (typeof session !== 'undefined') { %>
+            <input type="text" id="session" name="session" value="<%= session %>" required>
+          <% } else { %>
+            <input type="text" id="session" name="session" required>
+          <% } %>
+        </div>
+        <div class="form-row-element" style="position: relative;">
+          <label class="student-label" for="year">YEAR</label>
+            <input type="text" id="year" name="year" list="year-list" autocomplete="off" required>
+            <ul id="year-list" class="custom-dropdown"></ul>
+        </div>
+        <div class="form-row-element">
+          <label class="student-label" for="roll">ROLL NO.</label>
+          <input type="text" id="roll" name="roll" autocomplete="off" required>
+        </div>  
+      </div>
+      <div class="form-row">
+        <div class="form-row-element" style="position: relative;">
+          <label class="student-label" for="code">CENTER CODE</label>
+          <% if (typeof code !== 'undefined') { %>
+            <input type="text" id="code" name="code" value="<%= code %>" autocomplete="off" required>
+          <% } else { %>
+            <input type="text" id="code" name="code" list="code-list" autocomplete="off" required>
+            <ul id="code-list" class="custom-dropdown-code"></ul>
+          <% } %>
+        </div>
+        
+        <div class="form-row-element">
+          <label class="student-label" for="date">ADMISSION DATE</label>
+          <input type="text" id="date" name="date" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-row-element">
+          <label class="student-label" for="name">NAME OF APPLICANT</label>
+          <input type="text" class="student-input" id="name" name="name" style="width:45vw;" required>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-row-element">
+          <label class="student-label" for="guard_name">GUARDIAN NAME</label>
+          <input type="text" class="student-input" id="guard_name" name="guard_name" required>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-row-element">
+          <label class="student-label" for="add1">ADDRESS LINE 1</label>
+          <input type="text" class="student-input" id="add1" name="add1" >
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-row-element">
+          <label class="student-label" for="add2">ADDRESS LINE 2</label>
+          <input type="text" class="student-input" id="add2" name="add2" >
+        </div>
+      </div>
+      <hr>
+      <div class="form-row">
+        <div class="form-row-element">
+          <label class="student-label" for="name">CENTER NAME</label>
+          <div class="center-name output"></div>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-row-element">
+          <label class="student-label" for="add1">CENTER ADDRESS 1</label>
+          <div class="center-add1 output"></div>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-row-element">
+          <label class="student-label" for="add2">CENTER ADDRESS 2</label>
+          <div class="center-add2 output"></div>
+        </div>
+      </div>
+      <div class="button-submit">
+        <button type="submit" class="btn btn-primary" id="submit">Update</button>
+      </div>
+  </form>
+  <form action="/deleteStudent" id="delete-student-form"  method="POST" style="margin-top: 5px;">
+    <input type="hidden" name="delete_roll" id="delete-roll" value="">
+    <div class="button-submit"> 
+      <button type="submit" class="btn btn-danger" id="delete-btn">Delete</button>
+      <a href="/home" style="margin-left:10px" class="btn btn-primary">Cancel</a> 
+    </div>
+</form>
+<div id="confirm-dialog" class="delete-confirmation-dialog" style="display: none;">
+  <p>Are you sure you want to delete this student? This will remove the student data and also remove any marks entry of the student</p>
+  <button id="confirm-delete" class="btn btn-danger">Yes, Delete</button>
+  <button id="cancel-delete" class="btn btn-secondary">Cancel</button>
+</div>
+  <div id="roll-dialog" class="custom-dialog" style="display:none;">
+    <p>Roll number already exists!</p>
+    <button id="close-dialog">Close</button>
+</div>  
+</div>    
+
+<script>
+  window.onload = function() {
+  document.getElementById('roll').focus();
+};
+  document.getElementById('roll').addEventListener('input', async function() {
+    document.getElementById("status").style.display = "none"
+    const rollNumber = this.value;
+
+    if (rollNumber.length > 0) {
+      try {
+        // Fetch the student details from the backend
+        document.getElementById('delete-roll').value = rollNumber;
+        const response = await fetch(`/getStudentDetails?roll=${rollNumber}`);
+        if (response.ok) {
+          const student = await response.json();
+
+          // Populate the form fields with student details
+          document.getElementById('session').value = student.session;
+          document.getElementById('year').value = student.year;
+          document.getElementById('name').value = student.name;
+          document.getElementById('code').value = student.code;
+          document.getElementById('add1').value = student.add1;
+          document.getElementById('add2').value = student.add2;
+          document.getElementById('guard_name').value = student.guard_name;
+          document.getElementById('date').value = student.admission_date;
+
+          // Center details in the divs
+          document.querySelector('.center-name').textContent = student.center_name;
+          document.querySelector('.center-add1').textContent = student.center_add1;
+          document.querySelector('.center-add2').textContent = student.center_add2;
+
+          // Enable the submit button
+          document.getElementById('submit').disabled = false;
+          document.getElementById("status").style.display = "none"
+        } else {
+          // If no student is found, clear the fields and disable the submit button
+          document.getElementById("status").style.display = "block"
+          clearFields();
+          document.getElementById('submit').disabled = true;
+        }
+      } catch (error) {
+        console.error('Error fetching student details:', error);
+        clearFields();
+      }
+    } else {
+      // Clear the fields if the input is empty
+      clearFields();
+      document.getElementById('submit').disabled = true;
+    }
+  });
+
+  // Function to clear the form fields
+  function clearFields() {
+    document.getElementById('session').value = '';
+    document.getElementById('year').value = '';
+    document.getElementById('name').value = '';
+    document.getElementById('code').value = '';
+    document.getElementById('add1').value = '';
+    document.getElementById('add2').value = '';
+    document.getElementById('guard_name').value = '';
+    document.getElementById('date').value = '';
+    document.querySelector('.center-name').textContent = '';
+    document.querySelector('.center-add1').textContent = '';
+    document.querySelector('.center-add2').textContent = '';
+  }
+  const yearInput = document.getElementById('year');
+      const yearList = document.getElementById('year-list');
+
+      // Fetch years based on user input
+      yearInput.addEventListener('input', function() {
+        const query = this.value;
+        fetchYears(query); // Call fetchYears with the current input
+      });
+
+      // Fetch all years or filtered years when input is focused
+      yearInput.addEventListener('focus', function() {
+        const query = this.value;
+        fetchYears(query); // Fetch years, even if input is pre-filled
+      });
+
+      // Fetch years from the server based on the query
+      function fetchYears(query = '') {
+        fetch(`/getYears?query=${query}`)
+          .then(response => response.json())
+          .then(data => {
+            yearList.innerHTML = ''; // Clear existing options
+            data.forEach(year => {
+              const listItem = document.createElement('li');
+              listItem.textContent = year.year;
+              listItem.addEventListener('click', function () {
+                yearInput.value = year.year; // Set input value on click
+                yearList.style.display = 'none'; // Hide dropdown after selection
+              });
+              yearList.appendChild(listItem); // Add new list item
+            });
+            yearList.style.display = data.length ? 'block' : 'none'; // Show or hide dropdown based on results
+          })
+          .catch(error => console.error('Error fetching years:', error));
+      }
+
+      // Hide dropdown when clicking outside the input field
+      document.addEventListener('click', function (event) {
+        if (!event.target.closest('#year') && !event.target.closest('#year-list')) {
+          yearList.style.display = 'none'; // Hide dropdown if clicked outside
+        }
+      });
+      const codeInput = document.getElementById('code');
+const codeList = document.getElementById('code-list');
+
+// Fetch codes based on user input
+codeInput.addEventListener('input', function() {
+  const query = this.value;
+  fetchCodes(query); // Call fetchCodes with the current input
+});
+
+// Fetch all codes or filtered codes when input is focused
+codeInput.addEventListener('focus', function() {
+  const query = this.value;
+  fetchCodes(query); // Fetch codes, even if input is pre-filled
+});
+
+// Fetch codes from the server based on the query
+function fetchCodes(query = '') {
+  fetch(`/getSchoolCodes?query=${query}`)
+    .then(response => response.json())
+    .then(data => {
+      codeList.innerHTML = ''; // Clear existing options
+      data.forEach(code => {
+        const listItem = document.createElement('li');
+        listItem.textContent = code.code;
+        listItem.addEventListener('click', function () {
+          codeInput.value = code.code; // Set input value on click
+          codeList.style.display = 'none';
+          fetchSchoolDetails(code.code); // Hide dropdown after selection
+        });
+        codeList.appendChild(listItem); // Add new list item
+      });
+      codeList.style.display = data.length ? 'block' : 'none'; // Show or hide dropdown based on results
+    })
+    .catch(error => console.error('Error fetching codes:', error));
+}
+function fetchSchoolDetails(selectedCode) {
+  fetch(`/getSchoolDetails?code=${selectedCode}`)
+    .then(response => {
+      if (!response.ok) {
+        // If the response status is not 200-299, throw an error
+        return response.json().then(err => {
+          throw new Error(err.error || 'Failed to fetch school details');
+        });
+      }
+      return response.json();
+    })
+    .then(data => {
+      nameDiv.innerText = data.name || 'N/A';
+      add1Div.innerText = data.add1 || 'N/A';
+      add2Div.innerText = data.add2 || 'N/A';
+    })
+    .catch(error => {
+      console.error('Error fetching school details:', error);
+      resetSchoolDetails();
+    });
+}
+// Hide dropdown when clicking outside the input field
+document.addEventListener('click', function (event) {
+  if (!event.target.closest('#code') && !event.target.closest('#code-list')) {
+    codeList.style.display = 'none'; // Hide dropdown if clicked outside
+  }
+});
+
+
+//student delete
+document.addEventListener('DOMContentLoaded', function() {
+  const deleteBtn = document.getElementById('delete-btn');
+  const deleteForm = document.getElementById('delete-student-form');
+  const confirmDialog = document.getElementById('confirm-dialog');
+  const confirmDeleteBtn = document.getElementById('confirm-delete');
+  const cancelDeleteBtn = document.getElementById('cancel-delete');
+
+  // Show confirmation dialog when delete button is clicked
+  deleteBtn.addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent form from submitting
+    confirmDialog.style.display = 'block'; // Show the dialog
+  });
+
+  // If the user confirms, submit the form
+  confirmDeleteBtn.addEventListener('click', function() {
+    confirmDialog.style.display = 'none'; // Hide the dialog
+    deleteForm.submit(); // Submit the form
+  });
+
+  // If the user cancels, hide the dialog
+  cancelDeleteBtn.addEventListener('click', function() {
+    confirmDialog.style.display = 'none'; // Hide the dialog
+  });
+
+  // Close dialog if clicked outside
+  window.addEventListener('click', function(event) {
+    if (event.target === confirmDialog) {
+      confirmDialog.style.display = 'none';
+    }
+  });
+});
+
+</script>
+
+<%- include("../partials/footer.ejs")%>

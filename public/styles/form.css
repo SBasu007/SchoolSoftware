@@ -1,0 +1,150 @@
+.add-school-form{
+    background-color: rgb(205, 231, 253);
+    width:50vw;
+    margin: auto;
+    margin-bottom:20px;
+    padding:10px
+  }
+  .school-input{
+    width: 45vw !important;
+  }
+  .student-input{
+    width:50vw;
+  }
+  .form-control{
+    width:80%;
+    margin:auto;
+    margin-bottom: 15px;
+  }
+  .form-group>label{
+    font-weight: 400;
+  }
+  .button-submit{
+    margin-top: 20px;
+  }
+  .add-agent-form{
+    background-color: rgb(205, 231, 253);
+    width:30vw;;
+    margin-bottom:20px;
+    padding:10px
+  }
+  .add-student-form{
+    background-color: rgb(205, 231, 253);
+    width:80vw;;
+    margin-bottom:20px;
+    padding:40px;
+    padding-top:20px !important;
+    padding-bottom:20px !important;
+  }
+  .student-label{
+    margin-right:20px
+  }
+ .form-row-element{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+ }
+ .form-row{
+    display:flex;
+    justify-content: space-between;
+    margin-bottom:15px
+ }
+ .output{
+  height:30px;
+  background-color: aliceblue;
+  border:solid #495057 0.5px;
+  padding:5px
+ }
+ .add-course-form{
+  background-color: rgb(205, 231, 253);
+  width:30vw;;
+  margin-bottom:20px;
+  padding:20px 55px 20px 55px;
+}
+.custom-dropdown {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-left:55px;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  position: absolute;
+  background-color: white;
+  width: 78%; /* Matches the input field width */
+  top: 100%; /* Positions it directly under the input field */
+  left: 0; /* Align with the left side of the input field */
+  display: none; /* Hidden by default */
+  z-index: 1000; /* Makes sure it overlaps other fields */
+}
+
+.custom-dropdown li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.custom-dropdown li:hover {
+  background-color: #f0f0f0;
+}
+.custom-dropdown-code {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-left:122px;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+  position: absolute;
+  background-color: white;
+  width: 60%; /* Matches the input field width */
+  top: 100%; /* Positions it directly under the input field */
+  left: 0; /* Align with the left side of the input field */
+  display: none; /* Hidden by default */
+  z-index: 1000; /* Makes sure it overlaps other fields */
+}
+
+.custom-dropdown-code li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.custom-dropdown-code li:hover {
+  background-color: #f0f0f0;
+}
+.custom-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Make sure it's above other content */
+}
+
+.custom-dialog button {
+  margin-top: 10px;
+}
+.delete-confirmation-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 100px rgba(0,0,0,0.9);
+  z-index: 1000;
+}
+.delete-confirmation-dialog button {
+  margin: 5px;
+}
+.print-form{
+  background-color: rgb(205, 231, 253);
+  width:57vw;;
+  margin-bottom:20px;
+  padding:40px;
+  padding-top:20px !important;
+  padding-bottom:10px !important;
+}

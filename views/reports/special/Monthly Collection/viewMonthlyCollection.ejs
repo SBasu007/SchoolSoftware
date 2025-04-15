@@ -1,0 +1,50 @@
+<%- include("../../../partials/header.ejs")%>
+<div class="print-form" style="width:70vw !important">
+    <form action="/printMonthlyCollection" method="POST" target="_blank">
+        <h5 style="text-align: center; margin-bottom:20px">Monthly Collection</h5>
+        <h4 style="text-align: center; margin-bottom:20px">Enter Session and Month</h4>
+        <% if (typeof error_message !== 'undefined') { %>
+          <p style="text-align: center; color:red"><%= error_message %></p>
+        <% } %>
+        <div class="form-row">
+          <div class="form-row-element">
+            <label class="student-label" for="session"><strong>Session: </strong></label>
+            <input type="text" id="session" name="session" list="code-list" required autocomplete="off">
+        </div>
+        <div class="form-row-element">
+          <label class="student-label" for="month"><strong>Month: </strong></label>
+          <select id="month" name="month" style="width:110%"required>
+              <option value="" disabled selected>Select a month</option>
+              <option value="01">January</option>
+              <option value="02">February</option>
+              <option value="03">March</option>
+              <option value="04">April</option>
+              <option value="05">May</option>
+              <option value="06">June</option>
+              <option value="07">July</option>
+              <option value="08">August</option>
+              <option value="09">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+          </select>
+          
+        </div>
+        <div class="form-row-element">
+          <label class="student-label" for="year"><strong>Year: </strong></label>
+          <input type="text" id="year" name="year" list="code-list" required autocomplete="off">
+      </div>
+      </div>
+        <div class="button-submit">
+          <button type="submit" style=" width:10vw; margin-top:20px"class="btn btn-primary">Print</button>
+        </div>
+        <div class="button-submit">
+            <a href="/home" style=" width:10vw; margin-left:0px" class="btn btn-primary">Exit</a>
+        </div>
+    </form>
+      
+</div>    
+<script>
+ 
+</script>
+<%- include("../../../partials/footer.ejs")%>

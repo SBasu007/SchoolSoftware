@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Document in cm</title>
+    <style>
+        /* Set the paper size using cm */
+        @page {
+            size: 25.50cm 15.23cm;
+            margin: 0;
+        }
+
+        .text1 {
+            position: absolute;
+            top: 9cm; 
+            left: 16cm;
+        }
+
+        /* Modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .modal-content button {
+            margin: 10px;
+            padding: 10px 20px;
+        }
+
+        .modal-content button:hover {
+            cursor: pointer;
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="text1" id="text-content">DISTINCTION</div>
+    
+    <!-- Custom Modal Dialog -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <p>Do you want to print the next document?</p>
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <script>
+        // Simulate database data (you would replace this with your actual database fetch)
+        let documents = [
+            { text: "1ST DIVISION" },
+            { text: "1ST DIVISION" },
+            { text: "2ND DIVISION" }
+        ];
+
+        let currentDocIndex = 0;
+
+        // Function to open the modal and wait for user response
+        function openModal() {
+            return new Promise((resolve) => {
+                const modal = document.getElementById("myModal");
+                const yesBtn = document.getElementById("yesBtn");
+                const noBtn = document.getElementById("noBtn");
+
+                modal.style.display = "flex";  // Show modal
+
+                yesBtn.onclick = () => {
+                    modal.style.display = "none";  // Hide modal
+                    resolve(true);  // User clicked "Yes"
+                };
+
+                noBtn.onclick = () => {
+                    modal.style.display = "none";  // Hide modal
+                    resolve(false);  // User clicked "No"
+                };
+            });
+        }
+
+        // Function to load the document content and print it
+        function loadAndPrintDocument() {
+            if (currentDocIndex < documents.length) {
+                // Load content from the current document
+                document.getElementById('text-content').textContent = documents[currentDocIndex].text;
+
+                // Open print dialog and wait for the user to finish printing
+                setTimeout(() => {
+                    window.print();
+
+                    // After the print dialog, wait for the user's confirmation with custom modal
+                    setTimeout(async () => {
+                        let userResponse = await openModal();
+                        if (userResponse) {
+                            currentDocIndex++; // Move to the next document
+                            loadAndPrintDocument(); // Load and print next document
+                        } else {
+                            alert("Printing stopped.");
+                        }
+                    }, 500); // Delay to ensure the print dialog completes
+                }, 1000); // Delay before opening the print dialog
+            } else {
+                alert("No more documents to print.");
+            }
+        }
+
+        // Automatically load and print the first document on page load
+        window.onload = function() {
+            loadAndPrintDocument();
+        };
+    </script>
+</body>
+</html>

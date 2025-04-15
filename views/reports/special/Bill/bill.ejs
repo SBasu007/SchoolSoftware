@@ -1,0 +1,127 @@
+<%
+let totalStudents = 0;
+let totalFees = 0;
+let centerFee = 0;
+
+function postDate() {
+    const d = new Date();
+    let date = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+    return date;
+}; 
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Receipt</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 40px;
+            font-size: 15px;
+        }
+        h2 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th {
+            border-top: 1px dashed black;
+            border-bottom: 1px dashed black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        .row1, .row3 {
+            display: flex;
+            justify-content: space-between;
+        }
+        .row3{
+            margin-bottom:15px;
+        }
+        .signature {
+            margin-top: 20px;
+            margin-left: 40px;
+            text-align: left;
+            float: right;
+            border-top: 1px dotted black;
+            width: max-content;
+        }
+    </style>
+</head>
+<body>
+    <h2>FEE RECEIPT</h2>
+    <div class="row1">
+        <div class="content">Bill no.-</div>
+        <div class="content">Date: <%= postDate() %></div>
+    </div>
+    <div class="row2">
+        <p>From: <u><%= school[0].name.toUpperCase() %></u></p>
+        <p>Address: <u><%= school[0].add1.toUpperCase() %></u></p>
+        <p>Address: <u><%= school[0].add2.toUpperCase() %></u></p>
+    </div>
+    <div class="row3">
+        <div class="session">Session: <%= session %></div>
+        <div class="code">Centre Code: <%= code.toUpperCase() %></div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Rate/Student (Rs.)</th>
+                <th>No. of Students</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% rows.forEach((row) => { 
+                totalStudents += parseInt(row.student_count, 10); // Convert student_count to an integer
+                totalFees += parseInt(row.student_count, 10) * parseFloat(row.fees); // Ensure fees are handled as numbers
+            %>
+                <tr>
+                    <td><%= row.year %></td>
+                    <td><%= row.fees %></td>
+                    <td><%= row.student_count %></td>
+                    <td><%= row.student_count * row.fees %></td>
+                </tr>
+            <% }) %>
+            <!-- Row to show total students and total fees -->
+            <tr>
+                <td colspan="2" style="font-weight: bold;padding-left: 300px">Grand Total: </td>
+                <td style="font-weight: bold;"><%= totalStudents %></td>
+                <td style="font-weight: bold;"><%= totalFees %></td>
+            </tr>
+            <!-- Row to calculate and show the center fee -->
+            <%
+                centerFee = (totalFees * school[0].center_fee) / 100; // Calculate center fee percentage
+                let netAmount = totalFees - centerFee; // Calculate the net amount after subtracting center fee
+            %>
+            <tr>
+                <td colspan="3" style="font-weight: bold;padding-left: 300px">Center Fee (<%= school[0].center_fee %>%): </td>
+                <td style=""><%= centerFee.toFixed(2) %></td>
+            </tr>
+            <!-- Row to show the net amount -->
+            <tr>
+                <td colspan="3" style="font-weight: bold;padding-left: 300px">Net Amount: </td>
+                <td style=""><%= netAmount.toFixed(2) %></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="signature">
+        <p>Full Signature of collector</p>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        window.print();
+    });
+</script>
+</html>

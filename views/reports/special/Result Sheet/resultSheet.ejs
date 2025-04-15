@@ -1,0 +1,173 @@
+<% 
+// Simulate mock data directly in the EJS file for testing purposes
+//   const rows = Array.from({ length: 70 }, (_, i) => ({
+//   school_name: `The future foundation school`,
+//   student_name: `Soumyadeep Basu`,
+//   guard_name: 'Soumyadeep Basu ',
+//   roll: `BS/021756`,
+//   year: `Preliminary`, // Rotating between 4 years
+//   prac_1:'10',
+//   prac_2:'10',
+//   theory_1:'10',
+//   theory_2:'10',
+//   div:'10'
+// }));
+
+const rowsPerPage = 17;
+const totalPages = Math.ceil(rows.length / rowsPerPage); 
+let currentPage = 0;
+function postDate() {
+            const d = new Date();
+            let date = d.getDate() + "." + (d.getMonth() + 1) + "." + d.getFullYear();
+            return date;
+            }; 
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        /* Styling for table and layout */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            font-size: 10px;
+        }
+
+        .page {
+            page-break-after: always;
+            position: relative;
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+
+        table, th, td {
+            border-top: 0.5px solid black;
+            border-bottom: 0.5px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        td{
+            padding:8px 8px !important;
+            font-size:14px;
+        }
+        .year{
+            font-size: 12px !important;
+        }
+        .last{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: right;
+            padding-right: 20px;
+            font-size: 10px;
+        }
+
+        .signature {
+            text-align: left;
+            margin-top: 20px;
+            margin-left: 40px;
+        }
+        /* .expand{
+            width:25%
+        } */
+        /* CSS to hide the footer during printing except for page number */
+        @media print {
+            .page {
+                page-break-after: always;
+                margin:25px;
+                margin-top:20px
+            }
+        }
+        .page:first-child {
+        padding-top: 60px !important;
+    }
+
+    /* General styles for all pages after the first one */
+    .page:not(:first-child) {
+        padding-top: 10px;
+    }
+    </style>
+</head>
+<body>
+    <% rows.forEach((row, index) => { %>
+        <% if (index % rowsPerPage === 0) { currentPage++; %>
+            <div class="page">
+                <h2>RESULT SHEET</h2>
+                <h3><%= row.school_name.toUpperCase() %> [Code: <%= code %>] Session: <%= session %></h3>
+                <p>Page <%= currentPage %> of <%= totalPages %></p>
+                <p>Dated: <%= postDate()%></p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="expand">Name of the Student</th>
+                            <th>Roll No.</th>
+                            <th>Year</th>
+                            <th class="expand">Guardian's Name</th>
+                            <th>PR-I</th>
+                            <th>PR-II</th>
+                            <th>TR-I</th>
+                            <th>TR-II</th>
+                            <th>TOTAL</th>
+                            <th>DIV</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        <% } %>
+    
+        <tr>
+            <td class="expand"><%= row.student_name %></td>
+            <td><%= row.roll %></td>
+            <td class="year"><%= row.year %></td>
+            <td class="expand"><%= row.guard_name %></td>
+            <td><%= row.prac_1 %></td>
+            <td><%= row.prac_2 %></td>
+            <td><%= row.theory_1 %></td>
+            <td><%= row.theory_2 %></td>
+            <td><%= row.prac_1+row.prac_2+row.theory_1+row.theory_2%></td>
+            <td>
+                <% if (row.div >= 80) { %>
+                    Distinction
+                <% } else if (row.div >= 60) { %>
+                    1st
+                <% } else if (row.div >= 50) { %>
+                    2nd
+                <% } else if (row.div >= 40) { %>
+                    Pass
+                <% } else { %>
+                    Fail
+                <% } %>
+            </td>
+        </tr>
+    
+        <% if ((index + 1) % rowsPerPage === 0 || index === rows.length - 1) { %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+    <% }) %>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+            window.print();
+        });
+</script>
+</html>

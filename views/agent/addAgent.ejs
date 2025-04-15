@@ -1,0 +1,82 @@
+<%- include("../partials/header.ejs")%>
+<div class="add-agent-form">
+    <form action="/addAgent" method="POST">
+        <h3 style="text-align: center;">Agent Details</h3>
+        <% if (typeof error_message !== 'undefined') { %>
+          <p style="text-align: center; color:red"><%= error_message %></p>
+        <% } %>
+        <div class="form-group">
+          <label for="code">Agent Code:</label>
+          <input type="text" class="form-control" id="code" name="code" required>
+          <p id="agent-exists-message" style="color:red; display:none; text-align: center; font-weight: bolder;">AGENT ALREADY EXISTS!</p>
+        </div>
+        
+        <div class="form-group">
+          <label for="name">Agent Name:</label>
+          <input type="text" class="form-control" id="name" name="name" maxlength="200">
+        </div>
+        
+        <div class="form-group">
+          <label for="add1">Address(1):</label>
+          <input type="text" class="form-control" id="add1" name="add1" maxlength="200">
+        </div>
+        
+        <div class="form-group">
+          <label for="add2">Address(2):</label>
+          <input type="text" class="form-control" id="add2" name="add2" maxlength="200">
+        </div>
+        <div class="button-submit">
+          <button type="submit" class="btn btn-primary" id="submit-button">Save</button> 
+        </div>
+      </form>
+      <div class="button-submit"> 
+        <a class="cancel" href="/home"><button type="button" class="btn btn-primary">Cancel</button></a>  
+      </div>
+</div>    
+<%- include("../partials/footer.ejs")%>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Attach event listener to the agent code input field
+    document.getElementById('code').addEventListener('input', function() {
+      const agentCode = this.value;
+      if (agentCode) {
+        // Send AJAX request to check if the agent exists
+        fetch('/checkAgentCode', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ code: agentCode }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          const messageElement = document.getElementById('agent-exists-message');
+          const submitButton = document.getElementById('submit-button');
+          const name = document.getElementById('name');
+          const add1 = document.getElementById('add1');
+          const add2 = document.getElementById('add2');
+          
+
+          if (data.exists) {
+            // If agent exists, show the message and disable submit button
+            messageElement.style.display = 'block';
+            submitButton.disabled = true;
+            name.disabled = true;
+            add1.disabled = true;
+            add2.disabled = true;
+          } else {
+            // If agent doesn't exist, hide the message and enable submit button
+            messageElement.style.display = 'none';
+            submitButton.disabled = false;
+            name.disabled = false;
+            add1.disabled = false;
+            add2.disabled = false;
+          }
+        })
+        .catch(error => console.error('Error:', error));
+      }
+    });
+  });
+</script>
+

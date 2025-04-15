@@ -1,0 +1,67 @@
+<%- include("../../partials/header.ejs")%>
+<div class="print-form">
+    <form action="/printCertificate" method="POST" target="_blank">
+        <h5 style="text-align: center; margin-bottom:20px">Certificate Print</h5>
+        <h4 style="text-align: center; margin-bottom:20px">Enter Roll nos. of the candidates</h4>
+        <% if (typeof error_message !== 'undefined') { %>
+          <p style="text-align: center; color:red"><%= error_message %></p>
+        <% } %>
+        <div class="form-row">
+            <div class="form-row-element">
+                <label class="student-label"  for="roll"><strong>Starting No.</strong></label>
+                <input type="text"  id="start_roll" name="start_roll" required autocomplete="off">
+            </div>
+            <div class="form-row-element">
+                <label class="student-label"  for="roll"><strong>Ending No.</strong></label>
+                <input type="text"  id="end_roll" name="end_roll" required autocomplete="off">
+            </div>
+        </div>
+        
+        <div class="button-submit">
+          <button type="submit" style=" width:10vw; margin-top:20px"class="btn btn-primary">Print</button>
+        </div>
+    </form>
+    <form action="/printCertificatewithMarks" method="POST" target="_blank">
+        <input type="hidden" id="m_start_roll" name="m_start_roll" value="">
+        <input type="hidden" id="m_end_roll" name="m_end_roll" value="">
+        <div class="button-submit"> 
+          <button type="submit" class="btn btn-primary" id="percentage-btn">Print with Marks</button> 
+        </div>
+    </form>
+    <form action="/printCertificatewithMarksPercentage" method="POST" target="_blank">
+        <input type="hidden" id="pm_start_roll" name="pm_start_roll" value="">
+        <input type="hidden" id="pm_end_roll" name="pm_end_roll" value="">
+        <div class="button-submit"> 
+          <button type="submit" class="btn btn-primary" id="percentage-btn">Print with Marks Percentage</button> 
+        </div>
+    </form>
+    <form action="/printCertificateLaser" method="POST" target="_blank">
+        <input type="hidden" id="pml_start_roll" name="pml_start_roll" value="">
+        <input type="hidden" id="pml_end_roll" name="pml_end_roll" value="">
+        <div class="button-submit"> 
+          <button type="submit" class="btn btn-primary" id="percentage-btn">Print Digital Certificate</button> 
+        </div>
+    </form>
+    <div class="button-submit">
+        <a href="/home" style=" width:10vw; margin-left:0px" class="btn btn-primary">Exit</a>
+    </div>  
+</div>
+<script>
+    function updateHiddenFields() {
+        const startRoll = document.getElementById('start_roll').value;
+        const endRoll = document.getElementById('end_roll').value;
+
+        // Update hidden fields
+        document.getElementById('pm_start_roll').value = startRoll;
+        document.getElementById('pm_end_roll').value = endRoll;
+        document.getElementById('m_start_roll').value = startRoll;
+        document.getElementById('m_end_roll').value = endRoll;
+        document.getElementById('pml_start_roll').value = startRoll;
+        document.getElementById('pml_end_roll').value = endRoll;
+    }
+
+    // Attach event listeners to input fields
+    document.getElementById('start_roll').addEventListener('input', updateHiddenFields);
+    document.getElementById('end_roll').addEventListener('input', updateHiddenFields);
+</script>    
+<%- include("../../partials/footer.ejs")%>
