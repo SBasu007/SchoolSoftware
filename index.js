@@ -253,10 +253,10 @@ app.post("/addSchool", async (req, res) => {
   const query = `INSERT INTO school (code, name, add1, add2, auth_person, center_fee, agent_code, agent_comm)
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`;
   try {
-    await db.query(query, [code, name, add1, add2, auth_person, center_fee, agent_code, agent_comm]);
+    await db.query(query, [code.toUpperCase().trim(), name, add1, add2, auth_person, center_fee, agent_code, agent_comm]);
     res.render('./school/addSchool.ejs',{error_message:"Inserted successfully",admin:isAdmin});
   } catch (err) {
-    res.render('./school/addSchool.ejs',{error_message:"Error inserting school, agent code does not exist",admin:isAdmin});
+    res.render('./school/addSchool.ejs',{error_message:err,admin:isAdmin});
   }
 });
 app.post("/deleteSchool", async (req, res) => {
@@ -365,7 +365,7 @@ app.post("/addStudent", async (req, res) => {
                  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`;
 
   try {
-    await db.query(query, [roll, session, year, code, date, name, guard_name, add1, add2]);
+    await db.query(query, [roll.trim(), session, year, code, date, name, guard_name, add1, add2]);
     res.render('./student/addStudent.ejs', { error_message: "Student added successfully", admin: isAdmin, session , year, code });
   } catch (err) {
       res.render('./student/addStudent.ejs', { error_message: "Error adding student", admin: isAdmin });
@@ -634,7 +634,7 @@ app.post("/addMarks", async (req, res) => {
     const insertMarksQuery = `INSERT INTO marks (roll, theory_1, theory_2, prac_1, prac_2, div,division)
                               VALUES ($1, $2, $3, $4, $5,$6,$7)`;
 
-    await db.query(insertMarksQuery, [roll, thpaper1, thpaper2, pracpaper1, pracpaper2,div,division]);
+    await db.query(insertMarksQuery, [roll.trim(), thpaper1, thpaper2, pracpaper1, pracpaper2,div,division]);
 
     res.render('./marks/addMarks.ejs', { error_message: "Marks added successfully", admin: isAdmin });
   } catch (err) {
