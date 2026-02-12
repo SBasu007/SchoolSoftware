@@ -10,45 +10,50 @@
             size: 25.50cm 10.16cm;
             margin: 0;
         }
-
+        .text8 {
+            position: absolute;
+            top:3.9cm; 
+            left: 7.2cm;
+            margin:2px;
+        }
         .text1 {
             position: absolute;
-            top: 4.0cm; 
-            left: 4cm;
+            top: 2.95cm; 
+            left: 3.8cm;
             margin:2px;
         }
         .text2 {
             position: absolute;
-            top: 4.9cm; 
-            left: 6.2cm;
+            top: 4.78cm; 
+            left: 5.4cm;
             margin:2px;
         }
         .text3 {
             position: absolute;
-            top: 5.8cm; 
-            left: 15.6cm;
+            top: 5.68cm; 
+            left: 14.1cm;
             
         }
         .text4 {
             position: absolute;
-            top: 6.5cm; 
-            left: 5.6cm;
+            top: 6.4cm; 
+            left: 5cm;
             padding-top: 5px;
         }
         .text5 {
             position: absolute;
-            top: 7.5cm; 
-            left:7.1cm;
+            top: 7.35cm; 
+            left:5.8cm;
         }
         .text6 {
             position: absolute;
-            top: 8.0cm; 
-            left:7.1cm;
+            top: 7.85cm; 
+            left:5.8cm;
         }
         .text7 {
             position: absolute;
-            top: 8.5cm; 
-            left:7.1cm;
+            top: 8.35cm; 
+            left:5.8cm;
         }
         .font{
             width:max-content;
@@ -98,6 +103,7 @@
     <div class="text5 font" id="text-content5">DISTINCTION</div>
     <div class="text6 font" id="text-content6">DISTINCTION</div>
     <div class="text7 font" id="text-content7" >DISTINCTION</div>
+    <div class="text8 font" id="text-content8" >DISTINCTION</div>
 
     <!-- Custom Modal Dialog -->
     <div id="myModal" class="modal" style="display: none;">
@@ -131,7 +137,7 @@
                     document.getElementById('text-content5').textContent = students[currentDocIndex].school_name.toUpperCase();
                     document.getElementById('text-content6').textContent = students[currentDocIndex].school_address_line1.toUpperCase();
                     document.getElementById('text-content7').textContent = students[currentDocIndex].school_address_line2.toUpperCase();
-    
+                    document.getElementById('text-content8').textContent = students[currentDocIndex].guard_name;
                     // Open print dialog
                     setTimeout(() => {
                         window.print();
